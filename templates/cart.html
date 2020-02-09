@@ -1,4 +1,75 @@
 {% extends 'base.html'%}
 {% block main %}
-cccccc
+
+
+
+
+
+
+
+
+
+<table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>item name</th>
+              <th>item price</th>
+              <th>count </th>
+              <th>sum of price</th>
+            </tr>
+          </thead>
+
+
+          <tbody>
+
+              {% for pac in pc.all %}
+        
+
+            <tr>
+              <td>{{ pac.prdc.name }}</td>
+              <td>{{ pac.prdc.price   }}</td>
+              <td>{{ pac.count }}</td>
+              
+               {% for key , value in  sum_product.items %}
+                {% if key == pac.prdc %}
+              <td>{{ value }}</td>
+                {% endif %}
+              {% endfor %}  
+                 <td>
+            <form action="">
+              <input type="submit"  value="-" class="btn btn-link"/>
+              <input type="hidden" id="removepr" name="removepr" value="{{pac.prdc.name  }}" />
+            </form>
+            <form action="">
+              <input type="hidden" name="addpr"  id="addpr" value="{{pac.prdc.name  }}" />
+
+              <input type="submit"  value="+" class="btn btn-link"/>
+            </form>
+
+            </td>
+            </tr>
+
+ 
+            
+    {% endfor %}
+          <tr>
+              <td>totoal sum</td>
+              <td></td>
+              <td></td>
+              
+              <td>
+                {{ sum_product.total }}  
+              </td> 
+            </tr>
+
+
+          </tbody>
+        </table>
+
+
+
+
+
 {% endblock %}
+
+ 

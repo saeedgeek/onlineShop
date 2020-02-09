@@ -19,6 +19,8 @@ class Product(models.Model):
         ('wt','white'),
         ('gn','green'),
         ('pr','purple'),
+        ('or','orange'),
+        ('yl','yellow'),
 
 
     ]
@@ -70,4 +72,4 @@ class mobile(Product):
     os=models.CharField(max_length=50,choices=choise)
         
 
-        
+

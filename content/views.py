@@ -12,7 +12,38 @@ class Cart(View):
     def get(self, request, *args, **kwargs):
         user=request.user
         profile=Profile.objects.get(username=user.username)
-        return render(request,'cart.html',{'name':profile.phone_number,})    
+        cart,bol=cartmodel.objects.get_or_create(user=profile)
+        print(request.GET)
+        if "addpr" in request.GET:
+            product_name=request.GET["addpr"]
+            product=Product.objects.get(name=product_name)
+            prod_cart=Product_Cart.objects.get(crt=cart,prdc=product)
+            print(prod_cart.count, type(prod_cart.count))
+            prod_cart.count = int(prod_cart.count) + 1 
+            prod_cart.save()
+
+        elif "removepr" in request.GET:
+            product_name=request.GET["removepr"]
+            product=Product.objects.get(name=product_name)
+            prod_cart=Product_Cart.objects.get(crt=cart,prdc=product)
+            print(prod_cart.count, type(prod_cart.count))
+            prod_cart.count = int(prod_cart.count) - 1 
+            if prod_cart.count<=0:
+                prod_cart.delete()
+            else:    
+                prod_cart.save()
+
+        senddict={}
+        pc=Product_Cart.objects.filter(crt=cart)
+        sum_of_product={}
+        totoal=0
+        for p in pc :
+            temp=p.count * p.prdc.price
+            totoal+=temp
+            sum_of_product[p.prdc]=temp
+
+        sum_of_product['total']=totoal     
+        return render(request,'cart.html',{'pc':pc,"sum_product":sum_of_product})    
 
 class Category(View):
     def get(self, request, *args, **kwargs):
